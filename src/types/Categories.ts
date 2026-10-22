@@ -1,0 +1,28 @@
+export const ECategory = {
+    Beauty: "Beauty",
+    Fragrances: "Fragrances",
+    Furniture: "Furniture",
+    Groceries: "Groceries",
+    HomeDecoration: "Home Decoration",
+    KitchenAccessories: "Kitchen Accessories",
+    Laptops: "Laptops",
+    MensShirts: "Mens Shirts",
+    MensShoes: "Mens Shoes",
+    MensWatches: "Mens Watches",
+    MobileAccessories: "Mobile Accessories",
+    Motorcycle: "Motorcycle",
+    SkinCare: "Skin Care",
+    Smartphones: "Smartphones",
+    SportsAccessories: "Sports Accessories",
+    Sunglasses: "Sunglasses",
+    Tablets: "Tablets",
+    Tops: "Tops",
+    Vehicle: "Vehicle",
+    WomensBags: "Womens Bags",
+    WomensDresses: "Womens Dresses",
+    WomensJewellery: "Womens Jewellery",
+    WomensShoes: "Womens Shoes",
+    WomensWatches: "Womens Watches",
+} as const;
+
+export type ECategory = (typeof ECategory)[keyof typeof ECategory];
