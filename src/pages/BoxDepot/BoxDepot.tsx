@@ -18,7 +18,7 @@ function BoxDepot() {
     function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         // Visual only for now: plug your API call in here
-        console.log(Object.fromEntries(new FormData(e.currentTarget)));
+        console.log(new FormData(e.currentTarget));
     }
 
     return (
@@ -28,8 +28,7 @@ function BoxDepot() {
                     Tape &amp; list an item
                 </h1>
                 <p className="mt-2 text-sm text-stone-700">
-                    Got something with a few miles left on it? Describe it honestly, pick a box, and we'll stick it in
-                    the Bargain Bin.
+                    Got something to sell without too many questions ? Stick it in the bargain bin today ! No refunds or warranties, a scrapper's haven for selling stolen or salvaged goods !
                 </p>
             </header>
 
@@ -59,12 +58,12 @@ function BoxDepot() {
                             required
                         />
 
-                        <Select
-                            name="condition"
-                            label="Condition"
-                            placeholder="Be honest"
-                            options={conditionOptions}
-                            required
+                        <TextInput
+                            name='time'
+                            label='Shipping Time (Days)'
+                            placeholder='1'
+                            type='number'
+                            min={0}
                         />
 
                         <div className="md:col-span-2">

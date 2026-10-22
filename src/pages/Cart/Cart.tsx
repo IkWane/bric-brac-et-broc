@@ -3,15 +3,27 @@ import { Link } from 'react-router';
 import { useCart } from '../../contexts/Cart/CartContext';
 import CartItemPanel from './CartItemPanel';
 import CartSummary from './CartSummary';
+import { useCredit } from '../../contexts/Credit/CreditContext';
+
+export enum BuyError {
+    NONE = 'none',
+    INSUFFICIENT_CREDIT = 'insufficient-credit'
+}
 
 function Cart() {
     const { items, count, total, clear } = useCart();
     const [ordered, setOrdered] = useState(false);
+    const { credits, setCredits } = useCredit();
+    const [error, setError] = useState(BuyError.NONE);
 
     function handleBuy() {
-        // Replace with your real checkout call
-        clear();
-        setOrdered(true);
+        if (credits >= total) {
+            clear();
+            setCredits(credits - total);
+            setOrdered(true);
+        } else {
+            setError(BuyError.INSUFFICIENT_CREDIT);
+        }
     }
 
     return (
@@ -34,7 +46,7 @@ function Cart() {
                         ))}
                     </ul>
 
-                    <CartSummary subtotal={total} onBuy={handleBuy} />
+                    <CartSummary subtotal={total} onBuy={handleBuy} error={error} />
                 </>
             ) : (
                 <p className="mt-6 text-sm text-stone-700">

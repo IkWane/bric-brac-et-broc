@@ -3,6 +3,7 @@ import { useEffect, useState, type SubmitEvent } from 'react';
 import NavButton from '../Basic/NavButton';
 import RecycleIcon from '../Basic/RecycleIcon';
 import { useCart } from '../../contexts/Cart/CartContext';
+import { useCredit } from '../../contexts/Credit/CreditContext';
 
 const navItems = [
     { label: 'Bargain Bin', to: '/' },
@@ -37,10 +38,11 @@ function CartLink() {
 }
 
 function Credit({ align = 'end' }: { align?: 'start' | 'end' }) {
+    const { credits } = useCredit();
     return (
         <span className={`flex flex-col leading-tight ${align === 'end' ? 'items-end' : 'items-start'}`}>
             <span className="text-[10px] uppercase text-stone-600">Credit</span>
-            <span className="text-sm font-bold text-stone-900">$14.80</span>
+            <span className="text-sm font-bold text-stone-900">${credits.toFixed(2)}</span>
         </span>
     );
 }

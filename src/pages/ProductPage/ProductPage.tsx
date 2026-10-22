@@ -75,8 +75,8 @@ export default function ProductPage() {
 
     const finePrint = [
         { label: 'Shipping', value: product.shippingInformation },
-        { label: 'Warranty', value: product.warrantyInformation },
-        { label: 'Returns', value: product.returnPolicy },
+        { label: 'Warranty', value: 'Absolutely None' },
+        { label: 'Returns', value: 'What ?' },
     ].filter((row) => row.value);
 
     return (
@@ -137,9 +137,8 @@ export default function ProductPage() {
                                     aria-label={`Show photo ${i + 1}`}
                                     aria-pressed={i === activeImage}
                                     style={{ '--tilt': `${tilt(`${seed}-thumb-${i}`, 3)}deg` } as CSSProperties}
-                                    className={`h-14 w-14 rotate-(--tilt) bg-white p-1 shadow-sm transition-transform hover:rotate-0 focus-visible:outline-2 focus-visible:outline-orange-700 ${
-                                        i === activeImage ? 'ring-2 ring-orange-700' : ''
-                                    }`}
+                                    className={`h-14 w-14 rotate-(--tilt) bg-white p-1 shadow-sm transition-transform hover:rotate-0 focus-visible:outline-2 focus-visible:outline-orange-700 ${i === activeImage ? 'ring-2 ring-orange-700' : ''
+                                        }`}
                                 >
                                     <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" />
                                 </button>
