@@ -3,6 +3,7 @@ import type { Product } from '../../types/Product'
 import { tilt } from '../../utils/tilt'
 import Tag from '../Tag/Tag'
 import { Link } from 'react-router';
+import BuyButton from '../Basic/BuyButton';
 
 export default function ProductCard({ product }: { product: Product }) {
     const { id, title, price, thumbnail: image, postedAgo, label, labelSide = 'left', tags, description, category, stock } = product
@@ -72,8 +73,8 @@ export default function ProductCard({ product }: { product: Product }) {
                     </svg>
                     Seller: 
                 </span>
-                <button
-                    type="button"
+                <BuyButton
+                    product={product}
                     className="flex items-center gap-2 bg-[#6B4A24] px-3 py-1.5 text-sm font-bold uppercase text-white shadow-[2px_2px_0_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-700"
                 >
                     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
@@ -81,7 +82,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         <path d="M9 8a3 3 0 016 0" />
                     </svg>
                     Snag it
-                </button>
+                </BuyButton>
             </div>
         </article>
     )

@@ -11,37 +11,37 @@ import { timeAgo } from '../../utils/time'
 import InfoRow from '../../components/Basic/InfoRow'
 import TapedImage from '../../components/Basic/TapedImage'
 
-type Status = 'loading' | 'ready' | 'not-found'
+// type Status = 'loading' | 'ready' | 'not-found'
+
+enum Status {
+    LOADING = 'loading',
+    READY = 'ready',
+    NOTFOUND = 'not-found'
+}
 
 export default function ProductPage() {
     const { id } = useParams()
     const [product, setProduct] = useState<Product | null>(null)
-    const [status, setStatus] = useState<Status>('loading')
+    const [status, setStatus] = useState<Status>(Status.LOADING)
     const [activeImage, setActiveImage] = useState(0)
 
     useEffect(() => {
-        let cancelled = false;
-        setStatus('loading');
-        setActiveImage(0);
+        async function getProduct() {
+            setStatus(Status.LOADING);
+            setActiveImage(0);
 
-        fetchProduct(Number(id))
-            .then(data => {
-                if (cancelled) return
-                if (data?.id) {
-                    setProduct(data)
-                    setStatus('ready')
-                } else {
-                    setStatus('not-found')
-                }
-            })
-            .catch(() => !cancelled && setStatus('not-found'))
-
-        return () => {
-            cancelled = true
+            const fetchedProduct = await  fetchProduct(Number(id))
+            if (fetchedProduct?.id) {
+                setProduct(fetchedProduct)
+                setStatus(Status.READY)
+            } else {
+                setStatus(Status.NOTFOUND)
+            }
         }
+        getProduct();
     }, [id])
 
-    if (status === 'loading') {
+    if (status === Status.LOADING) {
         return (
             <main className="flex-1 px-4 py-16 text-left text-sm uppercase text-stone-600 sm:px-6">
                 Unwrapping the packing film…
@@ -49,7 +49,7 @@ export default function ProductPage() {
         )
     }
 
-    if (status === 'not-found' || !product) {
+    if (status === Status.NOTFOUND || !product) {
         return (
             <main className="flex-1 px-4 py-16 text-left sm:px-6">
                 <h1 className="m-0! text-2xl! font-bold uppercase text-stone-900">Item not found</h1>

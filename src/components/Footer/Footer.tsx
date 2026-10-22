@@ -35,8 +35,7 @@ export default function Footer() {
                         </span>
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-stone-600">
-                        Purveyors of random stuff and bulk industrial corrugated cardboard packaging since
-                        today.
+                        Purveyors of random stuff since today.
                     </p>
                 </div>
 
@@ -47,7 +46,7 @@ export default function Footer() {
                     </h2>
                     <p className="mt-3 text-xs leading-relaxed text-stone-600">
                         Every order is packed using recycled scrap newspaper and misprinted industrial kraft
-                        cartons. 0% glossy nonsense.
+                        cartons.
                     </p>
                     <div className="mt-4 flex items-center gap-3 text-stone-600">
                         <Icon label="Quality checked">

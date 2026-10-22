@@ -26,6 +26,7 @@ export default function BargainBin() {
     const q = (searchParams.get('q') ?? '').toLowerCase();
 
     useEffect(() => {
+        console.log("tesdt")
         async function handleQuery() {
             if (!isFetching.current) {
                 isFetching.current = true;

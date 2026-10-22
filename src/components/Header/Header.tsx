@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { type SubmitEvent } from 'react'
 import NavButton from '../Basic/NavButton';
 import RecycleIcon from '../Basic/RecycleIcon';
+import { useCart } from '../../contexts/Cart/CartContext';
 
 const navItems = [
     { label: 'Bargain Bin', to: '/' },
@@ -12,6 +13,7 @@ export default function Header() {
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const { total } = useCart();
 
     async function handleSearch(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -104,7 +106,7 @@ export default function Header() {
                             </svg>
                             <span className="flex flex-col items-start leading-tight">
                                 <span className="text-[10px] uppercase text-orange-700">Cart</span>
-                                <span className="text-sm font-bold text-stone-900">$4.20</span>
+                                <span className="text-sm font-bold text-stone-900">{total.toFixed(2)} $</span>
                             </span>
                         </div>
                     </NavButton>
