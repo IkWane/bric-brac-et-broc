@@ -1,9 +1,12 @@
-import type { SubmitEvent } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import TextInput from '../../components/Basic/Form/TextInput';
 import TextArea from '../../components/Basic/Form/TextArea';
 import Select from '../../components/Basic/Form/Select';
 import Tape from '../../components/Basic/Tape';
 import { ECategory } from '../../types/Categories';
+import { postProduct, productFromForm } from '../../api/products';
+import Tag from '../../components/Basic/Tag';
+import { BuyError } from '../Cart/Cart';
 
 const categoryOptions = Object.values(ECategory).map((name) => ({ value: name, label: name }));
 
@@ -15,10 +18,21 @@ const conditionOptions = [
 ];
 
 function BoxDepot() {
-    function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
+    const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+
+    async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
-        // Visual only for now: plug your API call in here
-        console.log(new FormData(e.currentTarget));
+        const form = e.currentTarget;
+        setStatus('sending');
+        try {
+            const created = await postProduct(productFromForm(new FormData(form)));
+            console.log('Taped to the bin:', created);
+            form.reset();
+            setStatus('done');
+        } catch (err) {
+            console.error(err);
+            setStatus('error');
+        }
     }
 
     return (
@@ -64,6 +78,7 @@ function BoxDepot() {
                             placeholder='1'
                             type='number'
                             min={0}
+                            required
                         />
 
                         <div className="md:col-span-2">
@@ -142,8 +157,12 @@ function BoxDepot() {
                         Start over
                     </button>
 
+                    <Tag seed='done!' label="Done" size='lg' hidden={status !== 'done'} />
+                    <Tag seed='error' label="Error" size='lg' hidden={status !== 'error'} />
+
                     <button
                         type="submit"
+                        disabled={status === 'sending'}
                         className="relative flex items-center justify-center gap-3 bg-orange-800 px-8 py-4 text-lg font-bold uppercase tracking-wider text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800"
                     >
                         <svg
