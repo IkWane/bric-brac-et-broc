@@ -1,25 +1,33 @@
-import { NavLink, useSearchParams } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { type SubmitEvent } from 'react'
+import NavButton from '../Basic/NavButton';
+import RecycleIcon from '../Basic/RecycleIcon';
 
 const navItems = [
-    { label: 'Bargain Bin', sub: '(C2C)', to: '/' },
-    { label: 'Box Depot', sub: '(B2C)', to: '/box-depot' },
+    { label: 'Bargain Bin', to: '/' },
+    { label: 'Box Depot', to: '/box-depot' },
 ]
 
 export default function Header() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     function handleSearch(e: SubmitEvent<HTMLFormElement>) {
-        e.preventDefault()
-        const q = String(new FormData(e.currentTarget).get('q') ?? '').trim()
+        e.preventDefault();
+        if (location.pathname !== '/') {
+            console.log('test')
+            navigate('/');
+        }
+        const q = String(new FormData(e.currentTarget).get('q') ?? '').trim();
 
         setSearchParams(prev => {
             const next = new URLSearchParams(prev)
-            if (q) next.set('q', q) 
+            if (q) next.set('q', q)
             else next.delete('q')
             next.delete('page')
             return next
-        })
+        });
     }
 
 
@@ -27,13 +35,16 @@ export default function Header() {
         <header className="w-full border-b-2 border-stone-800 bg-[#FFF9F5] px-4 py-2">
             <div className="flex items-center gap-6">
                 {/* Logo */}
-                <div className="flex flex-col leading-tight">
-                    <span className="text-base font-bold uppercase tracking-wide text-stone-900">
-                        Bric et Broc
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-orange-700">
-                        All the stuff !
-                    </span>
+                <div className="flex flex-row">
+                    <RecycleIcon className="h-9 w-9 text-orange-700 mr-2"/>
+                    <div className="flex flex-col leading-tight">
+                        <span className="text-base font-bold uppercase tracking-wide text-stone-900">
+                            Bric & Broc
+                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orange-700">
+                            All the stuff !
+                        </span>
+                    </div>
                 </div>
 
                 {/* Search */}
@@ -70,22 +81,8 @@ export default function Header() {
 
                 {/* Navigation */}
                 <nav className="flex items-center gap-3">
-                    {navItems.map(({ label, sub, to }) => (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            className={({ isActive }) =>
-                                `px-3 py-1.5 text-xs font-bold uppercase leading-tight ${
-                                    isActive
-                                        ? 'border-2 border-stone-800 bg-[#8B5E34] text-white shadow-[2px_2px_0_0_#1c1917]'
-                                        : 'border-2 border-transparent text-stone-800 hover:border-stone-800'
-                                }`
-                            }
-                        >
-                            {label}
-                            <br />
-                            {sub}
-                        </NavLink>
+                    {navItems.map(({ label, to }) => (
+                        <NavButton key={`${label}-'${to}'`} label={label} link={to}/>
                     ))}
                 </nav>
 

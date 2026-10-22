@@ -14,4 +14,13 @@ export interface Product {
     brand: string
     category: ECategory
     description: string
+ 
+    // Extra fields returned by dummyjson's /products/:id, used by ProductPage
+    images?: string[]
+    rating?: number
+    availabilityStatus?: string
+    warrantyInformation?: string
+    shippingInformation?: string
+    returnPolicy?: string
+    meta?: { createdAt: string; updatedAt: string }
 }
