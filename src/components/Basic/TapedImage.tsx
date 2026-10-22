@@ -1,9 +1,9 @@
-import type { CSSProperties } from "react";
-import { tilt } from "../../utils/tilt";
-import Tape from "./Tape";
+import type { CSSProperties } from 'react';
+import { tilt } from '../../utils/tilt';
+import Tape from './Tape';
 
-export default function TapedImage({ seed, image, alt}: { seed: string, image:string, alt: string}) {
-    return ( 
+export default function TapedImage({ seed, image, alt }: { seed: string; image: string; alt: string }) {
+    return (
         <figure
             style={{ '--tilt': `${tilt(`${seed}-photo`, 0.8)}deg` } as CSSProperties}
             className="relative mx-auto max-w-2xl rotate-(--tilt) bg-white p-3 shadow-md sm:p-4"
@@ -17,5 +17,5 @@ export default function TapedImage({ seed, image, alt}: { seed: string, image:st
                 <img src={image} alt={alt} className="h-full w-full object-contain" />
             </div>
         </figure>
-     );
+    );
 }

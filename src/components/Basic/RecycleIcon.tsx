@@ -17,5 +17,5 @@ export default function RecycleIcon({ className = '' }: { className?: string }) 
             <path d="m9.3 6.3 1.1-1.9a1.8 1.8 0 0 1 3.1 0l3.4 5.9" />
             <path d="m13.4 9.4 3.5.9.9-3.5" />
         </svg>
-    )
+    );
 }

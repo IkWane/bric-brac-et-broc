@@ -1,47 +1,43 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { useSearchParams } from 'react-router'
-import ProductCard from '../ProductCard/ProductCard'
-import { tilt } from '../../utils/tilt'
-import type { Product } from '../../types/Product'
-import { fetchProducts } from '../../api/products'
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useSearchParams } from 'react-router';
+import ProductCard from '../ProductCard/ProductCard';
+import { tilt } from '../../utils/tilt';
+import type { Product } from '../../types/Product';
+import { fetchProducts } from '../../api/products';
+import { ECategory } from '../../types/Categories';
 
-const filters = [
-    { id: 'all', label: 'All bin oddities' },
-    { id: 'weird', label: 'Weird but works ($0.50-$2)' },
-    { id: 'cables', label: 'Vintage cables & adaptors' },
-    { id: 'tools', label: 'Orphaned tools' },
-    { id: 'ceramics', label: 'Odd ceramics' },
-    { id: 'free', label: 'Free with $5 box purchase' },
-]
+enum SortType {
+    LOW = 'low',
+    HIGH = 'high',
+}
+
+const filters = ['ALL'].concat(Object.keys(ECategory));
 
 const sorts = [
-    { id: 'low', label: 'Lowest price first ($0.25+)' },
-    { id: 'high', label: 'Highest price first' },
-]
+    { id: SortType.LOW, label: 'Lowest price first' },
+    { id: SortType.HIGH, label: 'Highest price first' },
+];
 
 export default function BargainBin() {
     const [products, setProducts] = useState<Product[]>([]);
     const [searchParams] = useSearchParams();
     const isFetching = useRef(false);
     const q = (searchParams.get('q') ?? '').toLowerCase();
+    const [activeFilter, setActiveFilter] = useState('ALL');
+    const [sort, setSort] = useState(SortType.LOW);
 
     useEffect(() => {
-        console.log("tesdt")
         async function handleQuery() {
             if (!isFetching.current) {
                 isFetching.current = true;
-                setProducts(await fetchProducts(q));
+                setProducts(
+                    await fetchProducts(q, sort === SortType.LOW, activeFilter in ECategory ? activeFilter : undefined)
+                );
                 isFetching.current = false;
             }
         }
         handleQuery();
-    }, [q])
-
-    const [activeFilter, setActiveFilter] = useState('all');
-    const [sort, setSort] = useState('low');
-
-    const countFor = (id: string) =>
-        id === 'all' ? products.length : products.filter(p => p.category === id).length
+    }, [q, sort, activeFilter]);
 
     return (
         <section className="px-4 py-6 text-left sm:px-6">
@@ -51,8 +47,8 @@ export default function BargainBin() {
                         The Bargain Bin (C2C scrap &amp; oddities)
                     </h1>
                     <p className="mt-2 text-sm text-stone-700">
-                        Everything has a few miles on it. Sold without guarantees, but wrapped in love, old
-                        Sunday comics, and industrial packing film.
+                        Everything has a few miles on it. Sold without guarantees, but wrapped in love, old Sunday
+                        comics, and industrial packing film.
                     </p>
                 </div>
 
@@ -60,10 +56,10 @@ export default function BargainBin() {
                     Sort by junkiness:
                     <select
                         value={sort}
-                        onChange={e => setSort(e.target.value)}
+                        onChange={(e) => setSort(e.target.value as SortType)}
                         className="bg-stone-200 px-3 py-2 text-xs font-bold text-stone-900 outline-none focus-visible:outline-2 focus-visible:outline-orange-700"
                     >
-                        {sorts.map(s => (
+                        {sorts.map((s) => (
                             <option key={s.id} value={s.id}>
                                 {s.label}
                             </option>
@@ -75,34 +71,30 @@ export default function BargainBin() {
             {/* Filter tape */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
                 <span className="text-[10px] uppercase text-stone-600">Filter tape:</span>
-                {filters.map(f => {
-                    const active = f.id === activeFilter
+                {filters.map((f) => {
+                    const active = f === activeFilter;
                     return (
                         <button
-                            key={f.id}
+                            key={f}
                             type="button"
                             aria-pressed={active}
-                            onClick={() => setActiveFilter(f.id)}
-                            style={{ '--tilt': `${tilt(f.id, 1.5)}deg` } as CSSProperties}
+                            onClick={() => setActiveFilter(f)}
+                            style={{ '--tilt': `${tilt(f, 1.5)}deg` } as CSSProperties}
                             className={`rotate-(--tilt) px-3 py-1.5 text-[11px] font-bold uppercase transition-transform hover:rotate-0 focus-visible:outline-2 focus-visible:outline-orange-700 ${
-                                active
-                                    ? 'bg-amber-200 text-stone-900'
-                                    : f.id === 'free'
-                                      ? 'bg-red-100 text-stone-900'
-                                      : 'bg-stone-200 text-stone-800'
+                                active ? 'bg-amber-200 text-stone-900' : 'bg-stone-200 text-stone-800'
                             }`}
                         >
-                            {f.label}
-                            {f.id !== 'free' && active && ` (${countFor(f.id)})`}
+                            {f}
+                            {active && ` (${products.length})`}
                         </button>
-                    )
+                    );
                 })}
             </div>
 
             {/* Grid: generous gaps so the tilted cards don't overlap */}
             {products.length > 0 ? (
                 <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                    {products.map(product => (
+                    {products.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
@@ -112,5 +104,5 @@ export default function BargainBin() {
                 </p>
             )}
         </section>
-    )
+    );
 }

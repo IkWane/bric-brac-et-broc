@@ -1,11 +1,11 @@
 // Small deterministic hash (FNV-1a) so the same seed always gives the same tilt.
 function hash(str: string): number {
-    let h = 2166136261
+    let h = 2166136261;
     for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i)
-        h = Math.imul(h, 16777619)
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
     }
-    return h >>> 0
+    return h >>> 0;
 }
 
 /**
@@ -14,8 +14,8 @@ function hash(str: string): number {
  * when React re-renders or when filters change.
  */
 export function tilt(seed: string, max = 2): number {
-    const n = hash(seed) / 0xffffffff // 0..1
-    return Number(((n * 2 - 1) * max).toFixed(2))
+    const n = hash(seed) / 0xffffffff; // 0..1
+    return Number(((n * 2 - 1) * max).toFixed(2));
 }
 
 export function randomFromArray<T>(array: Array<T>, seed: string): T {

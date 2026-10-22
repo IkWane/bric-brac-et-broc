@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 export default function Panel({ children, className = '' }: { children: ReactNode; className?: string }) {
-    return <div className={`relative bg-[#F1E6DF] p-4 ${className}`}>{children}</div>
+    return <div className={`relative bg-[#F1E6DF] p-4 ${className}`}>{children}</div>;
 }

@@ -1,12 +1,27 @@
-import type { CSSProperties } from 'react'
-import type { Product } from '../../types/Product'
-import { tilt } from '../../utils/tilt'
-import Tag from '../Tag/Tag'
+import type { CSSProperties } from 'react';
+import type { Product } from '../../types/Product';
+import { tilt } from '../../utils/tilt';
+import Tag from '../Basic/Tag';
 import { Link } from 'react-router';
 import BuyButton from '../Basic/BuyButton';
+import { useCart } from '../../contexts/Cart/CartContext';
 
 export default function ProductCard({ product }: { product: Product }) {
-    const { id, title, price, thumbnail: image, postedAgo, label, labelSide = 'left', tags, description, category, stock } = product
+    const {
+        id,
+        title,
+        price,
+        thumbnail: image,
+        postedAgo,
+        label,
+        labelSide = 'left',
+        tags,
+        description,
+        category,
+        stock,
+    } = product;
+    const { getQuantity } = useCart();
+    const quantity = getQuantity(product.id);
 
     return (
         <article
@@ -46,23 +61,27 @@ export default function ProductCard({ product }: { product: Product }) {
 
             {/* Tags */}
             <div className="mt-3 flex flex-wrap gap-1.5 text-left">
-                Tags : <div className='*:mx-1'>{tags.map(tag => (
-                    <Tag key={tag} label={tag} seed={`${id}-${tag}`} />
-                ))}</div>
+                Tags :{' '}
+                <div className="*:mx-1">
+                    {tags.map((tag) => (
+                        <Tag key={tag} label={tag} seed={`${id}-${tag}`} />
+                    ))}
+                </div>
             </div>
 
             {/* Category */}
             <div className="mt-3 flex flex-wrap gap-1.5 text-left">
-                Category : <div className='*:mx-1'><Tag key={category} label={category} seed={`${id}-${category}`}/></div>
+                Category :{' '}
+                <div className="*:mx-1">
+                    <Tag key={category} label={category} seed={`${id}-${category}`} />
+                </div>
             </div>
 
             {/* Description */}
             <p className="mt-3 line-clamp-3 text-left text-xs text-stone-700">{description}</p>
 
             {/* Stock */}
-            <div className="mt-3 flex flex-wrap gap-1.5 text-left">
-                Stock : {stock}
-            </div>
+            <div className="mt-3 flex flex-wrap gap-1.5 text-left">Stock : {stock}</div>
 
             {/* Seller + buy button */}
             <div className="mt-3 flex items-center justify-between border-t border-stone-300/60 pt-3">
@@ -71,19 +90,26 @@ export default function ProductCard({ product }: { product: Product }) {
                         <circle cx="12" cy="8" r="4" />
                         <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
                     </svg>
-                    Seller: 
+                    Seller:
                 </span>
                 <BuyButton
                     product={product}
                     className="flex items-center gap-2 bg-[#6B4A24] px-3 py-1.5 text-sm font-bold uppercase text-white shadow-[2px_2px_0_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-700"
                 >
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+                    <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                    >
                         <path d="M5 8h14l-1 12H6L5 8z" />
                         <path d="M9 8a3 3 0 016 0" />
                     </svg>
-                    Snag it
+                    Snag it {quantity > 0 ? quantity : ''}
                 </BuyButton>
             </div>
         </article>
-    )
+    );
 }

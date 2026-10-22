@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 import RecycleIcon from '../Basic/RecycleIcon';
 
 function Icon({ children, label }: { children: ReactNode; label: string }) {
@@ -17,11 +17,11 @@ function Icon({ children, label }: { children: ReactNode; label: string }) {
             <title>{label}</title>
             {children}
         </svg>
-    )
+    );
 }
 
 export default function Footer() {
-    const year = new Date().getFullYear()
+    const year = new Date().getFullYear();
 
     return (
         <footer className="mt-auto w-full border-t-2 border-[#8B5E34] bg-[#F5EAE3] px-6 pb-6 pt-10 text-left sm:px-8">
@@ -41,12 +41,9 @@ export default function Footer() {
 
                 {/* Eco-pledge */}
                 <div className="max-w-xs">
-                    <h2 className="m-0! text-base! font-bold uppercase tracking-wide! text-stone-900">
-                        Eco-pledge
-                    </h2>
+                    <h2 className="m-0! text-base! font-bold uppercase tracking-wide! text-stone-900">Eco-pledge</h2>
                     <p className="mt-3 text-xs leading-relaxed text-stone-600">
-                        Every order is packed using recycled scrap newspaper and misprinted industrial kraft
-                        cartons.
+                        Every order is packed using recycled scrap newspaper and misprinted industrial kraft cartons.
                     </p>
                     <div className="mt-4 flex items-center gap-3 text-stone-600">
                         <Icon label="Quality checked">
@@ -73,5 +70,5 @@ export default function Footer() {
                 © {year} Bric &amp; Broc Emporium. No rights reserved. Keep scrapping.
             </p>
         </footer>
-    )
+    );
 }

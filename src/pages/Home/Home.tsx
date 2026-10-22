@@ -1,4 +1,4 @@
-import BargainBin from '../../components/BargainBin/BargainBin'
+import BargainBin from '../../components/BargainBin/BargainBin';
 
 /** A strip of translucent packing tape. Position and angle come from className. */
 function Tape({ className = '' }: { className?: string }) {
@@ -7,7 +7,7 @@ function Tape({ className = '' }: { className?: string }) {
             aria-hidden="true"
             className={`pointer-events-none absolute z-10 h-7 w-24 bg-sky-200/60 shadow-sm backdrop-blur-[1px] ${className}`}
         />
-    )
+    );
 }
 
 export default function Home() {
@@ -35,9 +35,9 @@ export default function Home() {
                         </h1>
 
                         <p className="max-w-xl text-sm leading-relaxed text-stone-700 sm:text-base">
-                            Discover unpredictable $0.25-$5 objects, or stock up on warehouse-grade recycled
-                            shipping cartons. Every parcel taped with extreme, unapologetic thriftiness
-                            by definitely not shifty individuals!
+                            Discover unpredictable $0.25-$5 objects, or stock up on warehouse-grade recycled shipping
+                            cartons. Every parcel taped with extreme, unapologetic thriftiness by definitely not shifty
+                            individuals!
                         </p>
                     </div>
                 </div>
@@ -45,5 +45,5 @@ export default function Home() {
 
             <BargainBin />
         </main>
-    )
+    );
 }

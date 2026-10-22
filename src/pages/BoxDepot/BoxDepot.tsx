@@ -1,10 +1,170 @@
+import type { SubmitEvent } from 'react';
+import TextInput from '../../components/Basic/Form/TextInput';
+import TextArea from '../../components/Basic/Form/TextArea';
+import Select from '../../components/Basic/Form/Select';
+import Tape from '../../components/Basic/Tape';
+import { ECategory } from '../../types/Categories';
+
+const categoryOptions = Object.values(ECategory).map((name) => ({ value: name, label: name }));
+
+const conditionOptions = [
+    { value: 'works', label: 'Works fine' },
+    { value: 'weird', label: 'Weird but works' },
+    { value: 'taped', label: 'Held together by tape' },
+    { value: 'parts', label: 'For parts only' },
+];
+
 function BoxDepot() {
-    
-    return ( 
-        <>
-            
-        </>
-     );
+    function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
+        e.preventDefault();
+        // Visual only for now: plug your API call in here
+        console.log(Object.fromEntries(new FormData(e.currentTarget)));
+    }
+
+    return (
+        <main className="flex-1 px-4 py-8 text-left sm:px-6 m-auto">
+            <header className="max-w-2xl">
+                <h1 className="m-0! text-3xl! font-bold uppercase tracking-tight! text-stone-900 sm:text-4xl!">
+                    Tape &amp; list an item
+                </h1>
+                <p className="mt-2 text-sm text-stone-700">
+                    Got something with a few miles left on it? Describe it honestly, pick a box, and we'll stick it in
+                    the Bargain Bin.
+                </p>
+            </header>
+
+            <form onSubmit={handleSubmit} className="mt-10 max-w-4xl">
+                {/* The item */}
+                <fieldset className="m-0 border-0 p-0">
+                    <legend className="mb-6 bg-amber-200/70 px-2 py-1 text-xs font-bold uppercase tracking-wider text-stone-800">
+                        The item
+                    </legend>
+
+                    <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+                        <div className="md:col-span-2">
+                            <TextInput
+                                name="title"
+                                label="What is it?"
+                                placeholder="1984 metal desktop oscillating fan"
+                                maxLength={80}
+                                required
+                            />
+                        </div>
+
+                        <Select
+                            name="category"
+                            label="Category"
+                            placeholder="Pick a shelf"
+                            options={categoryOptions}
+                            required
+                        />
+
+                        <Select
+                            name="condition"
+                            label="Condition"
+                            placeholder="Be honest"
+                            options={conditionOptions}
+                            required
+                        />
+
+                        <div className="md:col-span-2">
+                            <TextArea
+                                name="description"
+                                label="Description"
+                                placeholder="Grill is slightly bent, motor hums like a tiny jet engine…"
+                                hint="Mention anything missing, broken or held together by tape."
+                                rows={5}
+                                required
+                            />
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <TextInput
+                                name="tags"
+                                label="Tags"
+                                placeholder="vintage, metal, loud"
+                                hint="Separate tags with commas."
+                            />
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <TextInput
+                                name="thumbnail"
+                                type="url"
+                                label="Photo link"
+                                placeholder="https://…"
+                                hint="A bench photo works best: plain background, good light."
+                            />
+                        </div>
+                    </div>
+                </fieldset>
+
+                {/* Price & shipping */}
+                <fieldset className="m-0 mt-12 border-0 p-0">
+                    <legend className="mb-6 bg-sky-200/70 px-2 py-1 text-xs font-bold uppercase tracking-wider text-stone-800">
+                        Price &amp; shipping
+                    </legend>
+
+                    <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+                        <TextInput
+                            name="price"
+                            type="number"
+                            inputMode="decimal"
+                            label="Price ($)"
+                            placeholder="3.75"
+                            min={0.25}
+                            step={0.05}
+                            hint="Between $0.25 and $5."
+                            required
+                        />
+
+                        <TextInput
+                            name="stock"
+                            type="number"
+                            inputMode="numeric"
+                            label="How many?"
+                            defaultValue={1}
+                            min={1}
+                            step={1}
+                            required
+                        />
+                    </div>
+                </fieldset>
+
+                {/* Actions */}
+                <div className="relative mt-14 flex flex-col-reverse items-stretch gap-4 bg-[#F1E6DF] p-5 shadow-[0_10px_24px_-8px_rgba(60,40,20,0.3)] sm:flex-row sm:items-center sm:justify-between">
+                    <Tape className="-top-2 left-8 -rotate-3" />
+                    <Tape tone="blue" className="-top-2 right-8 rotate-2" />
+
+                    <button
+                        type="reset"
+                        className="px-4 py-2 text-xs font-bold uppercase text-stone-700 hover:underline focus-visible:outline-2 focus-visible:outline-orange-700"
+                    >
+                        Start over
+                    </button>
+
+                    <button
+                        type="submit"
+                        className="relative flex items-center justify-center gap-3 bg-orange-800 px-8 py-4 text-lg font-bold uppercase tracking-wider text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800"
+                    >
+                        <svg
+                            aria-hidden="true"
+                            className="h-5 w-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M12 3 3 7.5v9L12 21l9-4.5v-9L12 3z" />
+                            <path d="M3 7.5 12 12l9-4.5M12 12v9" />
+                        </svg>
+                        Tape it to the bin
+                    </button>
+                </div>
+            </form>
+        </main>
+    );
 }
 
 export default BoxDepot;
