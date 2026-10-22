@@ -13,21 +13,21 @@ export default function Header() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    function handleSearch(e: SubmitEvent<HTMLFormElement>) {
+    async function handleSearch(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (location.pathname !== '/') {
-            console.log('test')
-            navigate('/');
-        }
         const q = String(new FormData(e.currentTarget).get('q') ?? '').trim();
-
-        setSearchParams(prev => {
-            const next = new URLSearchParams(prev)
-            if (q) next.set('q', q)
-            else next.delete('q')
-            next.delete('page')
-            return next
-        });
+        
+        if (location.pathname !== '/') {
+            await navigate(`/?q=${q}`);
+        } else {
+            setSearchParams(prev => {
+                const next = new URLSearchParams(prev)
+                if (q) next.set('q', q)
+                else next.delete('q')
+                next.delete('page')
+                return next
+            });
+        }
     }
 
 
@@ -89,26 +89,26 @@ export default function Header() {
                 {/* Right side */}
                 <div className="ml-auto flex items-center gap-4">
                     {/* Cart */}
-                    <button
-                        type="button"
-                        className="flex items-center gap-2 border-2 border-orange-700 bg-orange-50 px-3 py-1.5 shadow-[2px_2px_0_0_#c2410c]"
-                    >
-                        <svg
-                            className="h-6 w-6 text-orange-700"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinejoin="round"
-                        >
-                            <rect x="3" y="4" width="18" height="5" />
-                            <path d="M5 9v10h14V9M10 13h4" />
-                        </svg>
-                        <span className="flex flex-col items-start leading-tight">
-                            <span className="text-[10px] uppercase text-orange-700">Cart</span>
-                            <span className="text-sm font-bold text-stone-900">$4.20</span>
-                        </span>
-                    </button>
+                    <NavButton link='/cart' activeColor='bg-[#F6ECE5]'>
+                        <div className='flex items-center gap-2'>
+                            <svg
+                                className="h-6 w-6 text-orange-700"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                            >
+                                <rect x="3" y="4" width="18" height="5" />
+                                <path d="M5 9v10h14V9M10 13h4" />
+                            </svg>
+                            <span className="flex flex-col items-start leading-tight">
+                                <span className="text-[10px] uppercase text-orange-700">Cart</span>
+                                <span className="text-sm font-bold text-stone-900">$4.20</span>
+                            </span>
+                        </div>
+                    </NavButton>
+                        
 
                     <div className="h-8 w-px bg-stone-300" />
 
