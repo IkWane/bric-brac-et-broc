@@ -1,4 +1,4 @@
-import { useId, type ComponentProps } from 'react';
+import { useEffect, useId, useState, type ComponentProps, type SyntheticEvent } from 'react';
 import FieldPanel, { type TapeLayout } from './FieldPanel';
 import { controlClasses } from './formStyles';
 
@@ -13,7 +13,7 @@ type SelectProps = Omit<ComponentProps<'select'>, 'className' | 'children'> & {
     /** Disabled first option shown until something is picked. */
     placeholder?: string;
     hint?: string;
-    error?: string;
+    resetError?: boolean;
     /** Defaults to one strip of tape on the top edge. */
     tape?: TapeLayout;
 };
@@ -24,7 +24,7 @@ export default function Select({
     options,
     placeholder,
     hint,
-    error,
+    resetError = false,
     tape = 'top',
     id,
     name,
@@ -38,12 +38,24 @@ export default function Select({
     // Show the placeholder when the field is uncontrolled and has no default
     const initial = value === undefined && defaultValue === undefined && placeholder ? '' : defaultValue;
 
+    const [error, setError] = useState('');
+
+    function onError(e: SyntheticEvent<HTMLSelectElement, Event>) {
+        setError(e.currentTarget.validationMessage);
+    }
+
+    useEffect(() => {
+        const set = async () => setError('');
+        set();
+    }, [resetError]);
+
     return (
         <FieldPanel id={fieldId} label={label} hint={hint} error={error} tape={tape} seed={name ?? fieldId}>
             <div className="relative">
                 <select
                     {...props}
                     id={fieldId}
+                    onError={onError}
                     name={name}
                     value={value}
                     defaultValue={initial}

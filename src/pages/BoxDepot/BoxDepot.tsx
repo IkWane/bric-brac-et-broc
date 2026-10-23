@@ -11,6 +11,7 @@ const categoryOptions = Object.values(ECategory).map((name) => ({ value: name, l
 
 function BoxDepot() {
     const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+    const [resetError, setResetError] = useState(false);
 
     async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -25,6 +26,10 @@ function BoxDepot() {
             console.error(err);
             setStatus('error');
         }
+    }
+
+    function handleSubmitClick() {
+        setResetError(!resetError);
     }
 
     return (
@@ -49,15 +54,17 @@ function BoxDepot() {
                     <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
                         <div className="md:col-span-2">
                             <TextInput
+                                resetError={resetError}
                                 name="title"
                                 label="What is it?"
-                                placeholder="1984 metal desktop oscillating fan"
+                                placeholder="Banana, Car, tesla coil, literal dirt, bilboquet..."
                                 maxLength={80}
                                 required
                             />
                         </div>
 
                         <Select
+                            resetError={resetError}
                             name="category"
                             label="Category"
                             placeholder="Pick a shelf"
@@ -66,6 +73,7 @@ function BoxDepot() {
                         />
 
                         <TextInput
+                            resetError={resetError}
                             name="time"
                             label="Shipping Time (Days)"
                             placeholder="1"
@@ -76,10 +84,11 @@ function BoxDepot() {
 
                         <div className="md:col-span-2">
                             <TextArea
+                                resetError={resetError}
                                 name="description"
                                 label="Description"
-                                placeholder="Grill is slightly bent, motor hums like a tiny jet engine…"
-                                hint="Mention anything missing, broken or held together by tape."
+                                placeholder="Greatest product you've ever bought ! No scams !!1!11!1!"
+                                hint="Be as dishonest as you want, we're not your mom..."
                                 rows={5}
                                 required
                             />
@@ -87,6 +96,7 @@ function BoxDepot() {
 
                         <div className="md:col-span-2">
                             <TextInput
+                                resetError={resetError}
                                 name="tags"
                                 label="Tags"
                                 placeholder="vintage, metal, loud"
@@ -96,6 +106,7 @@ function BoxDepot() {
 
                         <div className="md:col-span-2">
                             <TextInput
+                                resetError={resetError}
                                 name="thumbnail"
                                 type="url"
                                 label="Photo link"
@@ -114,6 +125,7 @@ function BoxDepot() {
 
                     <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
                         <TextInput
+                            resetError={resetError}
                             name="price"
                             type="number"
                             inputMode="decimal"
@@ -121,11 +133,12 @@ function BoxDepot() {
                             placeholder="3.75"
                             min={0.25}
                             step={0.05}
-                            hint="Between $0.25 and $5."
+                            hint="Less than market value if you want to actually sell"
                             required
                         />
 
                         <TextInput
+                            resetError={resetError}
                             name="stock"
                             type="number"
                             inputMode="numeric"
@@ -155,6 +168,7 @@ function BoxDepot() {
 
                     <button
                         type="submit"
+                        onClick={handleSubmitClick}
                         disabled={status === 'sending'}
                         className="relative flex items-center justify-center gap-3 bg-orange-800 px-8 py-4 text-lg font-bold uppercase tracking-wider text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800"
                     >

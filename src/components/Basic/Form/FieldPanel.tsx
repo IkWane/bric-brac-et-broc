@@ -54,7 +54,11 @@ export default function FieldPanel({ id, label, hint, error, tape, seed, childre
                 {children}
 
                 {error ? (
-                    <p id={`${id}-message`} className="mt-2 text-xs font-bold text-red-800">
+                    <p
+                        data-testId={`${id}-message`}
+                        id={`${id}-message`}
+                        className="mt-2 text-xs font-bold text-red-800"
+                    >
                         {error}
                     </p>
                 ) : (

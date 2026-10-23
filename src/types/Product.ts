@@ -6,9 +6,6 @@ export interface Product {
     price: number;
     thumbnail: string;
     postedAgo: string;
-    /** Small paper label stuck on top of the card, e.g. "TAPE TAG #114" */
-    label: string;
-    labelSide?: 'left' | 'right';
     tags: string[];
     stock: number;
     brand: string;

@@ -18,7 +18,7 @@ const sizeClasses: Record<TagSize, string> = {
 export default function Tag({
     label,
     seed,
-    hidden = true,
+    hidden = false,
     size = 'sm',
 }: {
     label: string;

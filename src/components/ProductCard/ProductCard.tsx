@@ -5,21 +5,10 @@ import Tag from '../Basic/Tag';
 import { Link } from 'react-router';
 import BuyButton from '../Basic/BuyButton';
 import { useCart } from '../../contexts/Cart/CartContext';
+import TapedImage from '../Basic/TapedImage';
 
 export default function ProductCard({ product }: { product: Product }) {
-    const {
-        id,
-        title,
-        price,
-        thumbnail: image,
-        postedAgo,
-        label,
-        labelSide = 'left',
-        tags,
-        description,
-        category,
-        stock,
-    } = product;
+    const { id, title, price, thumbnail: image, tags, description, category, stock } = product;
     const { getQuantity } = useCart();
     const quantity = getQuantity(product.id);
 
@@ -28,24 +17,11 @@ export default function ProductCard({ product }: { product: Product }) {
             style={{ '--tilt': `${tilt(id, 1.8)}deg` } as CSSProperties}
             className="group relative rotate-(--tilt) bg-[#F8E9E0] p-3 shadow-[0_6px_14px_-4px_rgba(60,40,20,0.25)] transition-transform duration-200 hover:rotate-0 hover:z-10"
         >
-            {/* Paper label stuck on top */}
-            <span
-                style={{ '--tilt': `${tilt(`${id}-label`, 3)}deg` } as CSSProperties}
-                className={`absolute -top-3 ${
-                    labelSide === 'left' ? 'left-4' : 'right-4'
-                } rotate-(--tilt) bg-amber-200 px-2 py-0.5 text-[10px] font-bold uppercase text-stone-800`}
-            >
-                {label}
-            </span>
-
             {/* Image */}
-            <div className="relative aspect-4/3 overflow-hidden bg-stone-200">
+            <div className="relative aspect-4/3 bg-stone-200">
                 <Link to={`product/${id}`}>
-                    <img src={image} alt={title} className="h-full w-full object-cover" loading="lazy" />
+                    <TapedImage image={image} alt={title} seed={`product-${id}`} />
                 </Link>
-                <span className="absolute bottom-2 left-2 bg-stone-900/85 px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">
-                    {postedAgo}
-                </span>
             </div>
 
             {/* Title + price */}
