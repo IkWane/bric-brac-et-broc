@@ -1,75 +1,38 @@
-# React + TypeScript + Vite
+# Bric & Broc
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tongue-in-cheek second-hand marketplace built with React. Browse a "bargain bin" of random items, add them to a cart, and pay with fake in-app credit, all wrapped in a taped-cardboard, scrapbook look.
 
-Currently, two official plugins are available:
+Product data comes from the public [DummyJSON](https://dummyjson.com) API, so no backend or API key is needed.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Bargain Bin**: product grid with search, category filters and price sorting
+- **Product page**: photo gallery, details and add-to-cart button
+- **Cart**: adjust quantities, 20% tax, checkout using credit (starts at $1000)
+- **Box Depot**: form to list an item for sale (visual only, not wired to an API yet)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The cart and credit balance are saved in `localStorage`, so they survive a page refresh.
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+React · TypeScript · Vite · Tailwind CSS v4 · React Router
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Requires [Node.js](https://nodejs.org) (LTS recommended).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install      # install dependencies
+npm run dev      # start the dev server (http://localhost:5173)
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Other scripts:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run build    # production build into dist/
+npm run preview  # serve the production build locally
 ```
+
+## Resetting your credit
+
+To start over with a fresh cart and $1000 credit, clear the `bric-broc-cart` and `bric-broc-credit` keys from your browser's local storage.
