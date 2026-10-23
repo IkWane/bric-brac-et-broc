@@ -20,10 +20,8 @@ export async function fetchProducts(query: string, priceASC: boolean = true, cat
     try {
         const resp = await fetch(url);
         const data = (await resp.json()).products as Product[];
-        console.log(url);
         return data;
-    } catch (err) {
-        console.log(err);
+    } catch {
         return [];
     }
 }

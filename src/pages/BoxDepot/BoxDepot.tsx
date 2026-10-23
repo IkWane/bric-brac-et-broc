@@ -6,16 +6,8 @@ import Tape from '../../components/Basic/Tape';
 import { ECategory } from '../../types/Categories';
 import { postProduct, productFromForm } from '../../api/products';
 import Tag from '../../components/Basic/Tag';
-import { BuyError } from '../Cart/Cart';
 
 const categoryOptions = Object.values(ECategory).map((name) => ({ value: name, label: name }));
-
-const conditionOptions = [
-    { value: 'works', label: 'Works fine' },
-    { value: 'weird', label: 'Weird but works' },
-    { value: 'taped', label: 'Held together by tape' },
-    { value: 'parts', label: 'For parts only' },
-];
 
 function BoxDepot() {
     const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
