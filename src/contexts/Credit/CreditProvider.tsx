@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { CreditContext } from "./CreditContext";
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { CreditContext } from './CreditContext';
 
-const CREDIT_KEY = 'bric-broc-credit'
+const CREDIT_KEY = 'bric-broc-credit';
 const STARTING_CREDIT = 1000;
 
 function loadCredit(): number {
@@ -18,15 +18,16 @@ export default function CreditProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         try {
             localStorage.setItem(CREDIT_KEY, credits.toString());
-        } catch {
-
-        }
+        } catch {}
     }, [credits]);
 
-    const value = useMemo(() => ({
-        credits,
-        setCredits,
-    }), [credits])
+    const value = useMemo(
+        () => ({
+            credits,
+            setCredits,
+        }),
+        [credits]
+    );
 
-    return <CreditContext value={value}>{children}</CreditContext>
+    return <CreditContext value={value}>{children}</CreditContext>;
 }

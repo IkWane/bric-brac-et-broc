@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 export interface CreditContextValue {
     credits: number;
@@ -9,6 +9,6 @@ export const CreditContext = createContext<CreditContextValue | null>(null);
 
 export function useCredit() {
     const credit = useContext(CreditContext);
-    if (!credit) throw new Error("useCredit must be used inside <CreditProvider>")
+    if (!credit) throw new Error('useCredit must be used inside <CreditProvider>');
     return credit;
 }

@@ -4,11 +4,7 @@ import { useCart } from '../../contexts/Cart/CartContext';
 import CartItemPanel from './CartItemPanel';
 import CartSummary from './CartSummary';
 import { useCredit } from '../../contexts/Credit/CreditContext';
-
-export enum BuyError {
-    NONE = 'none',
-    INSUFFICIENT_CREDIT = 'insufficient-credit'
-}
+import { BuyError } from '../../types/ErrorState';
 
 function Cart() {
     const { items, count, total, clear } = useCart();

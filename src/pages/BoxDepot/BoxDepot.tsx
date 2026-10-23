@@ -18,7 +18,7 @@ const conditionOptions = [
 ];
 
 function BoxDepot() {
-    const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+    const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
     async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -42,7 +42,8 @@ function BoxDepot() {
                     Tape &amp; list an item
                 </h1>
                 <p className="mt-2 text-sm text-stone-700">
-                    Got something to sell without too many questions ? Stick it in the bargain bin today ! No refunds or warranties, a scrapper's haven for selling stolen or salvaged goods !
+                    Got something to sell without too many questions ? Stick it in the bargain bin today ! No refunds or
+                    warranties, a scrapper's haven for selling stolen or salvaged goods !
                 </p>
             </header>
 
@@ -73,10 +74,10 @@ function BoxDepot() {
                         />
 
                         <TextInput
-                            name='time'
-                            label='Shipping Time (Days)'
-                            placeholder='1'
-                            type='number'
+                            name="time"
+                            label="Shipping Time (Days)"
+                            placeholder="1"
+                            type="number"
                             min={0}
                             required
                         />
@@ -157,8 +158,8 @@ function BoxDepot() {
                         Start over
                     </button>
 
-                    <Tag seed='done!' label="Done" size='lg' hidden={status !== 'done'} />
-                    <Tag seed='error' label="Error" size='lg' hidden={status !== 'error'} />
+                    <Tag seed="done!" label="Done" size="lg" hidden={status !== 'done'} />
+                    <Tag seed="error" label="Error" size="lg" hidden={status !== 'error'} />
 
                     <button
                         type="submit"

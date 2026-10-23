@@ -1,13 +1,21 @@
 import Panel from '../../components/Basic/Panel';
 import Tag from '../../components/Basic/Tag';
 import Tape from '../../components/Basic/Tape';
-import { BuyError } from './Cart';
+import { BuyError } from '../../types/ErrorState';
 
 export const TAX_RATE = 0.2;
 
 const money = (n: number) => `$${n.toFixed(2)}`;
 
-export default function CartSummary({ subtotal, onBuy, error }: { subtotal: number; onBuy: () => void, error: BuyError }) {
+export default function CartSummary({
+    subtotal,
+    onBuy,
+    error,
+}: {
+    subtotal: number;
+    onBuy: () => void;
+    error: BuyError;
+}) {
     const tax = subtotal * TAX_RATE;
     const final = subtotal + tax;
 
@@ -35,8 +43,13 @@ export default function CartSummary({ subtotal, onBuy, error }: { subtotal: numb
             </div>
 
             {/* Right: buy */}
-            <div className='flex flex-col gap-10'>
-                <Tag seed='error' label="Error: Not enough credits to complete purchase !" size='sm' hidden={error !== BuyError.INSUFFICIENT_CREDIT} />
+            <div className="flex flex-col gap-10">
+                <Tag
+                    seed="error"
+                    label="Error: Not enough credits to complete purchase !"
+                    size="sm"
+                    hidden={error !== BuyError.INSUFFICIENT_CREDIT}
+                />
                 <button
                     type="button"
                     onClick={onBuy}

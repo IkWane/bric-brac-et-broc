@@ -15,13 +15,24 @@ const sizeClasses: Record<TagSize, string> = {
     lg: 'px-3 py-1.5 text-2xl tracking-wider',
 };
 
-export default function Tag({ label, seed, hidden = true, size = 'sm' }: { label: string; seed: string; hidden?: boolean; size?: TagSize }) {
+export default function Tag({
+    label,
+    seed,
+    hidden = true,
+    size = 'sm',
+}: {
+    label: string;
+    seed: string;
+    hidden?: boolean;
+    size?: TagSize;
+}) {
     return (
         <span
             hidden={hidden}
             style={{ '--tilt': `${tilt(seed, 2.5)}deg` } as CSSProperties}
-            className={`inline-block rotate-(--tilt) font-bold uppercase text-center leading-none ${sizeClasses[size]} ${toneClasses[randomFromArray(['red', 'blue', 'plain'], seed) as TagTone]
-                }`}
+            className={`inline-block rotate-(--tilt) font-bold uppercase text-center leading-none ${
+                sizeClasses[size]
+            } ${toneClasses[randomFromArray(['red', 'blue', 'plain'], seed) as TagTone]}`}
         >
             {label}
         </span>

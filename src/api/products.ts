@@ -8,8 +8,8 @@ function getValueByKeyForStringEnum(value: string) {
 export async function fetchProducts(query: string, priceASC: boolean = true, category?: string): Promise<Product[]> {
     const url = new URL(
         'https://dummyjson.com/products' +
-        (query && !category ? '/search' : '') +
-        (!query && category ? `/category/${getValueByKeyForStringEnum(category)}` : '')
+            (query && !category ? '/search' : '') +
+            (!query && category ? `/category/${getValueByKeyForStringEnum(category)}` : '')
     );
     url.searchParams.set('sortBy', 'price');
     url.searchParams.set('order', priceASC ? 'asc' : 'desc');
