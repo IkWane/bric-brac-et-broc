@@ -1,46 +1,84 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import ProductCard from '../ProductCard/ProductCard';
-import { tilt } from '../../utils/tilt';
 import type { Product } from '../../types/Product';
-import { fetchProducts } from '../../api/products';
+import { fetchProductPage } from '../../api/products';
 import { ECategory } from '../../types/Categories';
+import Select from '../Basic/Form/Select';
+import Pagination from './Pagination';
 
 enum SortType {
     LOW = 'low',
     HIGH = 'high',
 }
 
-const filters = ['ALL'].concat(Object.keys(ECategory));
+const ALL = 'ALL';
+const categoryOptions = [
+    { value: ALL, label: 'All' },
+    ...Object.entries(ECategory).map(([key, name]) => ({ value: key, label: name })),
+];
 
 const sorts = [
     { id: SortType.LOW, label: 'Lowest price first' },
     { id: SortType.HIGH, label: 'Highest price first' },
 ];
 
+const DEFAULT_PAGE_SIZE = 20;
+const pageSizeOptions = [10, 20, 50].map((n) => ({ value: String(n), label: `${n} per page` }));
+
 export default function BargainBin() {
     const [products, setProducts] = useState<Product[]>([]);
-    const [searchParams] = useSearchParams();
-    const isFetching = useRef(false);
+    const [total, setTotal] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
     const q = (searchParams.get('q') ?? '').toLowerCase();
-    const [activeFilter, setActiveFilter] = useState('ALL');
+    const page = Math.max(1, Math.floor(Number(searchParams.get('page')) || 1));
+    const [activeFilter, setActiveFilter] = useState(ALL);
     const [sort, setSort] = useState(SortType.LOW);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const sectionRef = useRef<HTMLElement>(null);
+
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
     useEffect(() => {
+        // Ignore answers to requests that a newer one has replaced (fast page clicks)
+        let ignore = false;
         async function handleQuery() {
-            if (!isFetching.current) {
-                isFetching.current = true;
-                setProducts(
-                    await fetchProducts(q, sort === SortType.LOW, activeFilter in ECategory ? activeFilter : undefined)
-                );
-                isFetching.current = false;
+            const result = await fetchProductPage(
+                q,
+                sort === SortType.LOW,
+                activeFilter in ECategory ? activeFilter : undefined,
+                page,
+                pageSize
+            );
+            if (!ignore) {
+                setProducts(result.products);
+                setTotal(result.total);
             }
         }
         handleQuery();
-    }, [q, sort, activeFilter]);
+        return () => {
+            ignore = true;
+        };
+    }, [q, sort, activeFilter, page, pageSize]);
+
+    function goToPage(next: number, scroll = true) {
+        setSearchParams((prev) => {
+            const params = new URLSearchParams(prev);
+            if (next > 1) params.set('page', String(next));
+            else params.delete('page');
+            return params;
+        });
+        if (scroll) sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // A page past the end (old link, smaller result set) jumps to the last page
+    useEffect(() => {
+        if (total > 0 && page > totalPages) goToPage(totalPages, false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [total, page, totalPages]);
 
     return (
-        <section className="px-4 py-6 text-left sm:px-6">
+        <section ref={sectionRef} className="scroll-mt-4 px-4 py-6 text-left sm:px-6">
             <header className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-xl">
                     <h1 className="m-0! text-3xl! font-bold uppercase tracking-tight! text-stone-900">
@@ -56,7 +94,10 @@ export default function BargainBin() {
                     Sort by junkiness:
                     <select
                         value={sort}
-                        onChange={(e) => setSort(e.target.value as SortType)}
+                        onChange={(e) => {
+                            setSort(e.target.value as SortType);
+                            goToPage(1, false);
+                        }}
                         className="bg-stone-200 px-3 py-2 text-xs font-bold text-stone-900 outline-none focus-visible:outline-2 focus-visible:outline-orange-700"
                     >
                         {sorts.map((s) => (
@@ -68,27 +109,33 @@ export default function BargainBin() {
                 </label>
             </header>
 
-            {/* Filter tape */}
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-                <span className="text-[10px] uppercase text-stone-600">Filter tape:</span>
-                {filters.map((f) => {
-                    const active = f === activeFilter;
-                    return (
-                        <button
-                            key={f}
-                            type="button"
-                            aria-pressed={active}
-                            onClick={() => setActiveFilter(f)}
-                            style={{ '--tilt': `${tilt(f, 1.5)}deg` } as CSSProperties}
-                            className={`rotate-(--tilt) px-3 py-1.5 text-[11px] font-bold uppercase transition-transform hover:rotate-0 focus-visible:outline-2 focus-visible:outline-orange-700 ${
-                                active ? 'bg-amber-200 text-stone-900' : 'bg-stone-200 text-stone-800'
-                            }`}
-                        >
-                            {f}
-                            {active && ` (${products.length})`}
-                        </button>
-                    );
-                })}
+            {/* Category + page size */}
+            <div className="mt-8 flex flex-wrap items-start gap-x-10 gap-y-6">
+                <div className="w-64">
+                    <Select
+                        name="category"
+                        label="Category"
+                        options={categoryOptions}
+                        value={activeFilter}
+                        hint={`${total} ${total === 1 ? 'item' : 'items'} in the bin`}
+                        onChange={(e) => {
+                            setActiveFilter(e.target.value);
+                            goToPage(1, false);
+                        }}
+                    />
+                </div>
+                <div className="w-52">
+                    <Select
+                        name="pageSize"
+                        label="Show"
+                        options={pageSizeOptions}
+                        value={String(pageSize)}
+                        onChange={(e) => {
+                            setPageSize(Number(e.target.value));
+                            goToPage(1, false);
+                        }}
+                    />
+                </div>
             </div>
 
             {/* Grid: generous gaps so the tilted cards don't overlap */}
@@ -103,6 +150,8 @@ export default function BargainBin() {
                     Nothing in the bin matches that. Try another filter or clear your search.
                 </p>
             )}
+
+            <Pagination page={Math.min(page, totalPages)} totalPages={totalPages} onChange={goToPage} />
         </section>
     );
 }

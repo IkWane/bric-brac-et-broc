@@ -70,7 +70,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </span>
                 <BuyButton
                     product={product}
-                    className="flex items-center gap-2 bg-[#6B4A24] px-3 py-1.5 text-sm font-bold uppercase text-white shadow-[2px_2px_0_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-700"
+                    variant="secondary"
                 >
                     <svg
                         className="h-4 w-4"

@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router';
 import { useCart, type CartItem } from '../../contexts/Cart/CartContext';
 import { tilt } from '../../utils/tilt';
+import Button from '../../components/Basic/Button';
 import Panel from '../../components/Basic/Panel';
 import Tape from '../../components/Basic/Tape';
 
@@ -36,30 +37,24 @@ export default function CartItemPanel({ item }: { item: CartItem }) {
                         </Link>
 
                         <div className="mt-2 flex items-center gap-1">
-                            <button
-                                type="button"
+                            <Button
+                                variant="square"
                                 aria-label={`One less ${item.title}`}
                                 onClick={() => setQuantity(item.id, item.quantity - 1)}
-                                className="h-6 w-6 bg-white text-sm font-bold text-stone-800 hover:bg-stone-200 focus-visible:outline-2 focus-visible:outline-orange-700"
                             >
                                 −
-                            </button>
-                            <button
-                                type="button"
+                            </Button>
+                            <Button
+                                variant="square"
                                 aria-label={`One more ${item.title}`}
                                 onClick={() => setQuantity(item.id, item.quantity + 1)}
                                 disabled={item.quantity >= item.stock}
-                                className="h-6 w-6 bg-white text-sm font-bold text-stone-800 hover:bg-stone-200 focus-visible:outline-2 focus-visible:outline-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 +
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => remove(item.id)}
-                                className="ml-2 text-[10px] font-bold uppercase text-red-800 hover:underline focus-visible:outline-2 focus-visible:outline-orange-700"
-                            >
+                            </Button>
+                            <Button variant="danger" className="ml-2" onClick={() => remove(item.id)}>
                                 Remove
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

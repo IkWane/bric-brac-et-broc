@@ -3,6 +3,7 @@ import TextInput from '../../components/Basic/Form/TextInput';
 import TextArea from '../../components/Basic/Form/TextArea';
 import Select from '../../components/Basic/Form/Select';
 import Tape from '../../components/Basic/Tape';
+import Button from '../../components/Basic/Button';
 import { ECategory } from '../../types/Categories';
 import { postProduct, productFromForm } from '../../api/products';
 import Tag from '../../components/Basic/Tag';
@@ -156,22 +157,14 @@ function BoxDepot() {
                     <Tape className="-top-2 left-8 -rotate-3" />
                     <Tape tone="blue" className="-top-2 right-8 rotate-2" />
 
-                    <button
-                        type="reset"
-                        className="px-4 py-2 text-xs font-bold uppercase text-stone-700 hover:underline focus-visible:outline-2 focus-visible:outline-orange-700"
-                    >
+                    <Button variant="ghost" type="reset" className="px-4 py-2 text-xs">
                         Start over
-                    </button>
+                    </Button>
 
                     <Tag seed="done!" label="Done" size="lg" hidden={status !== 'done'} />
                     <Tag seed="error" label="Error" size="lg" hidden={status !== 'error'} />
 
-                    <button
-                        type="submit"
-                        onClick={handleSubmitClick}
-                        disabled={status === 'sending'}
-                        className="relative flex items-center justify-center gap-3 bg-orange-800 px-8 py-4 text-lg font-bold uppercase tracking-wider text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800"
-                    >
+                    <Button type="submit" onClick={handleSubmitClick} disabled={status === 'sending'}>
                         <svg
                             aria-hidden="true"
                             className="h-5 w-5"
@@ -185,7 +178,7 @@ function BoxDepot() {
                             <path d="M3 7.5 12 12l9-4.5M12 12v9" />
                         </svg>
                         Tape it to the bin
-                    </button>
+                    </Button>
                 </div>
             </form>
         </main>

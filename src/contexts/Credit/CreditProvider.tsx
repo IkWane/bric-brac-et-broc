@@ -18,7 +18,9 @@ export default function CreditProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         try {
             localStorage.setItem(CREDIT_KEY, credits.toString());
-        } catch {}
+        } catch {
+            /* local storage unavailable, do nothing */
+        }
     }, [credits]);
 
     const value = useMemo(

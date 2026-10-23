@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { useEffect, useState, type SubmitEvent } from 'react';
 import NavButton from '../Basic/NavButton';
+import Button from '../Basic/Button';
 import RecycleIcon from '../Basic/RecycleIcon';
 import { useCart } from '../../contexts/Cart/CartContext';
 import { useCredit } from '../../contexts/Credit/CreditContext';
@@ -103,7 +104,8 @@ export default function Header() {
                     onSubmit={handleSearch}
                     className="relative min-w-0 flex-1 lg:flex-none"
                 >
-                    <button
+                    <Button
+                        variant="plain"
                         type="submit"
                         aria-label="Search"
                         className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2"
@@ -120,7 +122,7 @@ export default function Header() {
                             <circle cx="11" cy="11" r="7" />
                             <path d="M20 20l-4-4" />
                         </svg>
-                    </button>
+                    </Button>
                     <input
                         type="search"
                         key={searchParams.get('q') ?? ''}
@@ -149,13 +151,13 @@ export default function Header() {
                 </div>
 
                 {/* Burger button (small screens only) */}
-                <button
-                    type="button"
+                <Button
+                    variant="outline"
                     aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                     aria-expanded={menuOpen}
                     aria-controls="mobile-menu"
                     onClick={() => setMenuOpen((open) => !open)}
-                    className="grid h-9 w-9 shrink-0 place-items-center border-2 border-stone-800 bg-white shadow-[2px_2px_0_0_#1c1917] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-700 lg:hidden"
+                    className="lg:hidden"
                 >
                     <svg
                         aria-hidden="true"
@@ -168,7 +170,7 @@ export default function Header() {
                     >
                         {menuOpen ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
                     </svg>
-                </button>
+                </Button>
             </div>
 
             {/* Burger menu panel. Clicking any link inside closes it. */}

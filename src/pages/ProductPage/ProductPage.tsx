@@ -1,9 +1,8 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { fetchProduct } from '../../api/products';
 import type { Product } from '../../types/Product';
 import Tag from '../../components/Basic/Tag';
-import { tilt } from '../../utils/tilt';
 import CheckBadge from '../../components/Basic/CheckBadge';
 import Tape from '../../components/Basic/Tape';
 import Panel from '../../components/Basic/Panel';
@@ -11,6 +10,7 @@ import { timeAgo } from '../../utils/time';
 import InfoRow from '../../components/Basic/InfoRow';
 import TapedImage from '../../components/Basic/TapedImage';
 import BuyButton from '../../components/Basic/BuyButton';
+import Button from '../../components/Basic/Button';
 import { useCart } from '../../contexts/Cart/CartContext';
 
 // type Status = 'loading' | 'ready' | 'not-found'
@@ -130,19 +130,17 @@ export default function ProductPage() {
                     {images.length > 1 && (
                         <div className="mx-auto mt-5 flex max-w-2xl flex-wrap gap-3">
                             {images.map((src, i) => (
-                                <button
+                                <Button
                                     key={src}
-                                    type="button"
+                                    variant="photo"
+                                    tiltSeed={`${seed}-thumb-${i}`}
+                                    tiltMax={3}
                                     onClick={() => setActiveImage(i)}
                                     aria-label={`Show photo ${i + 1}`}
                                     aria-pressed={i === activeImage}
-                                    style={{ '--tilt': `${tilt(`${seed}-thumb-${i}`, 3)}deg` } as CSSProperties}
-                                    className={`h-14 w-14 rotate-(--tilt) bg-white p-1 shadow-sm transition-transform hover:rotate-0 focus-visible:outline-2 focus-visible:outline-orange-700 ${
-                                        i === activeImage ? 'ring-2 ring-orange-700' : ''
-                                    }`}
                                 >
                                     <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" />
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}
@@ -207,10 +205,7 @@ export default function ProductPage() {
                     </Panel>
 
                     {/* CTA */}
-                    <BuyButton
-                        product={product}
-                        className="relative flex items-center justify-center gap-4 bg-orange-800 px-6 py-4 text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800 disabled:cursor-not-allowed disabled:bg-stone-400 disabled:hover:translate-y-0"
-                    >
+                    <BuyButton product={product} className="gap-4 px-6">
                         <Tape className="-top-2 left-5 w-10 rotate-[-4deg]" />
                         <Tape className="-bottom-2 right-5 w-10 rotate-3" />
                         <svg

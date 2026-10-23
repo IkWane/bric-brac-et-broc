@@ -15,9 +15,15 @@ export type ButtonVariant =
     /** Plain text that underlines on hover (Start over) */
     | 'ghost'
     /** Red text that underlines on hover (Remove) */
-    | 'danger';
+    | 'danger'
+    /** Taped photo thumbnail, ringed when aria-pressed (product gallery) */
+    | 'photo'
+    /** No look of its own, for icon buttons placed by the caller (search) */
+    | 'plain'
+    /** Boxed page number, filled orange when aria-current="page" (pagination) */
+    | 'page';
 
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'icon-sm' | 'icon';
+export type ButtonSize = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'icon-sm' | 'icon' | 'thumb' | 'page';
 
 const base =
     'inline-flex items-center justify-center font-bold uppercase leading-snug transition-transform ' +
@@ -39,15 +45,27 @@ const variants: Record<ButtonVariant, string> = {
     square: 'bg-white text-stone-800 hover:bg-stone-200 disabled:opacity-40',
     ghost: 'text-stone-700 hover:underline focus-visible:outline-offset-0',
     danger: 'text-red-800 hover:underline focus-visible:outline-offset-0',
+    photo:
+        'rotate-(--tilt) bg-white p-1 shadow-sm hover:rotate-0 focus-visible:outline-offset-0 ' +
+        'aria-pressed:ring-2 aria-pressed:ring-orange-700',
+    plain: '',
+    page:
+        'border-2 border-stone-800 bg-white text-stone-900 shadow-[2px_2px_0_0_#1c1917] ' +
+        'hover:-translate-y-0.5 active:translate-y-0 ' +
+        'aria-[current=page]:bg-orange-800 aria-[current=page]:text-white aria-[current=page]:hover:translate-y-0 ' +
+        'disabled:opacity-40 disabled:shadow-none disabled:hover:translate-y-0',
 };
 
 const sizes: Record<ButtonSize, string> = {
+    none: '',
     xs: 'gap-1 text-[10px]',
     sm: 'gap-2 px-3 py-1.5 text-[11px]',
     md: 'gap-2 px-3 py-1.5 text-sm',
     lg: 'gap-3 px-8 py-4 text-lg',
     'icon-sm': 'h-6 w-6 shrink-0 text-sm',
     icon: 'h-9 w-9 shrink-0',
+    thumb: 'h-14 w-14 shrink-0',
+    page: 'h-9 min-w-9 shrink-0 px-2 text-sm',
 };
 
 /** Size used when none is passed, so most call sites only pick a variant. */
@@ -59,6 +77,9 @@ const defaultSize: Record<ButtonVariant, ButtonSize> = {
     square: 'icon-sm',
     ghost: 'sm',
     danger: 'xs',
+    photo: 'thumb',
+    plain: 'none',
+    page: 'page',
 };
 
 export type ButtonProps = ComponentProps<'button'> & {

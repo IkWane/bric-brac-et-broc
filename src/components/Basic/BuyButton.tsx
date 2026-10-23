@@ -1,19 +1,11 @@
-import type { ReactNode } from 'react';
 import { useCart } from '../../contexts/Cart/CartContext';
 import type { Product } from '../../types/Product';
+import Button, { type ButtonProps } from './Button';
 
-function BuyButton({ product, className, children }: { product: Product; className: string; children: ReactNode }) {
+function BuyButton({ product, ...props }: Omit<ButtonProps, 'onClick'> & { product: Product }) {
     const { add } = useCart();
 
-    function handleBuy() {
-        add(product);
-    }
-
-    return (
-        <button type="button" disabled={product.stock === 0} onClick={handleBuy} className={className}>
-            {children}
-        </button>
-    );
+    return <Button {...props} disabled={product.stock === 0} onClick={() => add(product)} />;
 }
 
 export default BuyButton;

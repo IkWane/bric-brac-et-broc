@@ -1,3 +1,4 @@
+import Button from '../../components/Basic/Button';
 import Panel from '../../components/Basic/Panel';
 import Tag from '../../components/Basic/Tag';
 import Tape from '../../components/Basic/Tape';
@@ -50,11 +51,7 @@ export default function CartSummary({
                     size="sm"
                     hidden={error !== BuyError.INSUFFICIENT_CREDIT}
                 />
-                <button
-                    type="button"
-                    onClick={onBuy}
-                    className="relative flex items-center justify-center gap-3 bg-orange-800 px-8 py-4 text-lg font-bold uppercase tracking-wider text-white shadow-[0_6px_14px_-6px_rgba(60,40,20,0.4)] transition-transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-800"
-                >
+                <Button variant="ghost" onClick={onBuy}>
                     <Tape size="h-5 w-10" className="-left-5 top-1/2 -translate-y-1/2 -rotate-96" />
                     <Tape size="h-5 w-10" className="-right-5 top-1/2 -translate-y-1/2 rotate-87" />
                     <svg
@@ -70,7 +67,7 @@ export default function CartSummary({
                         <path d="M3 7.5 12 12l9-4.5M12 12v9" />
                     </svg>
                     Seal the box &amp; pay
-                </button>
+                </Button>
             </div>
         </Panel>
     );

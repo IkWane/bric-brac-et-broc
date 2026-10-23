@@ -5,7 +5,13 @@ function getValueByKeyForStringEnum(value: string) {
     return Object.entries(ECategory).find(([key]) => key === value)?.[1];
 }
 
-export async function fetchProducts(query: string, priceASC: boolean = true, category?: string): Promise<Product[]> {
+export interface ProductPage {
+    products: Product[];
+    /** Number of products matching the query across all pages */
+    total: number;
+}
+
+function productsUrl(query: string, priceASC: boolean, category?: string): URL {
     const url = new URL(
         'https://dummyjson.com/products' +
             (query && !category ? '/search' : '') +
@@ -16,6 +22,11 @@ export async function fetchProducts(query: string, priceASC: boolean = true, cat
     if (query) {
         url.searchParams.set('q', query);
     }
+    return url;
+}
+
+export async function fetchProducts(query: string, priceASC: boolean = true, category?: string): Promise<Product[]> {
+    const url = productsUrl(query, priceASC, category);
 
     try {
         const resp = await fetch(url);
@@ -23,6 +34,27 @@ export async function fetchProducts(query: string, priceASC: boolean = true, cat
         return data;
     } catch {
         return [];
+    }
+}
+
+/** One page of products. `page` starts at 1. */
+export async function fetchProductPage(
+    query: string,
+    priceASC: boolean = true,
+    category?: string,
+    page: number = 1,
+    limit: number = 20
+): Promise<ProductPage> {
+    const url = productsUrl(query, priceASC, category);
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('skip', String((Math.max(page, 1) - 1) * limit));
+
+    try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+        return { products: (data.products ?? []) as Product[], total: Number(data.total ?? 0) };
+    } catch {
+        return { products: [], total: 0 };
     }
 }
 
